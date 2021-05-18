@@ -1,10 +1,16 @@
 name: Manually triggered workflow
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      tagName:
+        description: 'tag name test desc'
+        required: true
+        default: 'Mona the Octocat'
 
 jobs:
   say_hello:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "Hello ${{ github.event.tagName }}!"
+           echo "Hello ${{ github.event.inputs.tagName }}!"
