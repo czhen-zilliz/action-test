@@ -22,7 +22,7 @@ jobs:
           export release_url=`cat ./tarball_url`
           echo "$release_url"
           wget "$release_url" -O pymilvus.tar.gz
-          mkdir pymilvus && tar -xzvf pymilvus.tar.gz -C pymilvus --strip-components 1
-          cd pymilvus/docs
-          ls -a
+          sudo mkdir pymilvus && tar -xzvf pymilvus.tar.gz -C pymilvus --strip-components 1
+          cd ./pymilvus/docs
+          ls
 
