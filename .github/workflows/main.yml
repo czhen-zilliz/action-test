@@ -18,7 +18,8 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/milvus-io/pymilvus/releases/tags/${{ github.event.inputs.tagName }}" \
             | jq -r '.tarball_url' \
-            | read release_url
+            > ./tarball_url
+          export release_url=`cat ./tarball_url`
           echo "$release_url"
           wget "$release_url" -O pymilvus.tar.gz
           mkdir pymilvus && tar -xzvf pymilvus.tar.gz -C pymilvus --strip-components 1
