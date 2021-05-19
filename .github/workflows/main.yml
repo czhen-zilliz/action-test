@@ -29,6 +29,7 @@ jobs:
           sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/czhen-zilliz/action-test.git
           git config --global user.email "zhen.chen@zilliz.com"
           git config --global user.name "czhen-zilliz"
+          sudo chmod -R 777 action-test
           cd action-test/docs
           if [ -d "./${{ github.event.inputs.tagName }}" ]
           then
