@@ -39,7 +39,7 @@ jobs:
             sudo mkdir "./${{ github.event.inputs.tagName }}"
           fi
           echo "===copy docs==="
-          cp ../../pymilvus/docs/source/* "./${{ github.event.inputs.tagName }}"
+          sudo cp ../../pymilvus/docs/source/* "./${{ github.event.inputs.tagName }}"
           git add .
           git commit -m "Update pymilvus"
           git push -f origin master
