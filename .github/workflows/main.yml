@@ -29,19 +29,17 @@ jobs:
           sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/czhen-zilliz/action-test.git
           git config --global user.email "zhen.chen@zilliz.com"
           git config --global user.name "czhen-zilliz"
-          echo "===git clone finished, ls=="
-          ls -l
-          # cd ./action-test/docs
-          # if [ -d "./${{ github.event.inputs.tagName }}" ]
-          # then
-          #   echo "===tag name exists, remove all under this dir==="
-          #   sudo rm -fr "./${{ github.event.inputs.tagName }}"
-          # else
-          #   echo "===miss tag name, create this dir==="
-          #   sudo mkdir "./${{ github.event.inputs.tagName }}"
-          # fi
-          # echo "===copy docs==="
-          # cp ../../pymilvus/docs/source/* "./${{ github.event.inputs.tagName }}"
-          # git add .
-          # git commit -m "Update pymilvus"
-          # git push -f origin master
+          cd action-test/docs
+          if [ -d "./${{ github.event.inputs.tagName }}" ]
+          then
+            echo "===tag name exists, remove all under this dir==="
+            sudo rm -fr "./${{ github.event.inputs.tagName }}"
+          else
+            echo "===miss tag name, create this dir==="
+            sudo mkdir "./${{ github.event.inputs.tagName }}"
+          fi
+          echo "===copy docs==="
+          cp ../../pymilvus/docs/source/* "./${{ github.event.inputs.tagName }}"
+          git add .
+          git commit -m "Update pymilvus"
+          git push -f origin master
