@@ -23,7 +23,8 @@ jobs:
           echo "$release_url"
           wget "$release_url" -O pymilvus.tar.gz
           sudo mkdir ./pymilvus
-          tar -xzvf pymilvus.tar.gz -C pymilvus --strip-components 1
+          ls
+          sudo tar -xzvf pymilvus.tar.gz -C pymilvus --strip-components 1
           cd ./pymilvus/docs/source/
           ls
 
