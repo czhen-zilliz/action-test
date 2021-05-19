@@ -6,10 +6,9 @@ on:
       tagName:
         description: 'tag name test desc'
         required: true
-        default: 'Mona the Octocat'
 
 jobs:
-  say_hello:
+  update_branch:
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -23,8 +22,18 @@ jobs:
           echo "$release_url"
           wget "$release_url" -O pymilvus.tar.gz
           sudo mkdir ./pymilvus
-          ls
           sudo tar -xzvf pymilvus.tar.gz -C pymilvus --strip-components 1
-          cd ./pymilvus/docs/source/
-          ls
-
+          sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/czhen-zilliz/action-test.git
+          git config --global user.email "zhen.chen@zilliz.com"
+          git config --global user.name "czhen-zilliz"
+          cd ./action-test/docs
+          if [ -d "./${{ github.event.inputs.tagName }}" ]
+          then
+            sudo rm -fr "./${{ github.event.inputs.tagName }}"
+          else
+            sudo mkdir "./${{ github.event.inputs.tagName }}"
+          fi
+          cp ../pymilvus/docs/source/* "./${{ github.event.inputs.tagName }}"
+          git add .
+          git commit -m "Update pymilvus"
+          git push -f origin master
