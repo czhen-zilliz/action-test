@@ -4,42 +4,36 @@ on:
   workflow_dispatch:
     inputs:
       tagName:
-        description: 'Tag name'
+        description: 'tag name'
         required: true
-      repoName:
-        description: 'Repo name'
+      from:
+        description: 'repo'
         required: true
 
 jobs:
   update_branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch target release URL by tag
-        run: |
+      - run: |
+          echo "Hello ${{ github.event.inputs.tagName }}!"
           curl \
             -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/milvus-io/${{ github.event.inputs.repoName }}/releases/tags/${{ github.event.inputs.tagName }}" \
+            "https://api.github.com/repos/milvus-io/pymilvus/releases/tags/${{ github.event.inputs.tagName }}" \
             | jq -r '.tarball_url' \
             > ./tarball_url
           export release_url=`cat ./tarball_url`
-          echo "=>Completed: Fetching target release URL $release_url."
-      - name: Download and untar release code
-        run: |
-          wget "$release_url" -O "${{ github.event.inputs.repoName }}.tar.gz"
-          sudo mkdir "./${{ github.event.inputs.repoName }}"
-          sudo tar -xzvf "${{ github.event.inputs.repoName }}.tar.gz" -C "${{ github.event.inputs.repoName }}" --strip-components 1
-          echo "=>List all doc files"
-          ls -l "./${{ github.event.inputs.repoName }}"
-          echo "=>Completed: download and untar."
-      - name: Git clone and update doc repo
-        run: |
+          echo "$release_url"
+          wget "$release_url" -O pymilvus.tar.gz
+          sudo mkdir ./pymilvus
+          sudo tar -xzvf pymilvus.tar.gz -C pymilvus --strip-components 1
+          echo "===untar completed==="
+          ls ./pymilvus
+          echo "===git clone action-test==="
           sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/czhen-zilliz/action-test.git
           git config --global user.email "zhen.chen@zilliz.com"
-          git config --global user.name "czhen-zilliz" 
+          git config --global user.name "czhen-zilliz"
           sudo chmod -R 777 action-test
-          cd action-test/pymilvus
-          echo "=>List all doc versions"
-          ls -l action-test/pymilvus
+          cd action-test/docs
           if [ -d "./${{ github.event.inputs.tagName }}" ]
           then
             echo "===tag name exists, remove all under this dir==="
@@ -48,7 +42,7 @@ jobs:
             echo "===miss tag name, create this dir==="
             sudo mkdir "./${{ github.event.inputs.tagName }}"
           fi
-          echo "=>Completed: download and untar."
+          echo "===copy docs==="
           sudo cp ../../pymilvus/docs/source/* "./${{ github.event.inputs.tagName }}"
           git add .
           git commit -m "Update pymilvus"
