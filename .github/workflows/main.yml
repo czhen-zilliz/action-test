@@ -75,7 +75,7 @@ jobs:
             echo "===miss tag name, create this dir==="
             sudo mkdir "./${{ github.event.inputs.tagName }}"
           fi
-          sudo cp ../../pymilvus/docs/source/* "./${{ github.event.inputs.tagName }}"
+          sudo cp ../../../pymilvus/docs/source/* "./${{ github.event.inputs.tagName }}"
           git add .
           git commit -m "Update pymilvus"
           git push -f origin master
