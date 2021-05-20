@@ -14,7 +14,8 @@ jobs:
   update_branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch target release URL by tag
+      - id: fetch_tarball_url
+        name: Fetch target release URL by tag
         run: |
           curl \
             -H "Accept: application/vnd.github.v3+json" \
@@ -22,16 +23,19 @@ jobs:
             | jq -r '.tarball_url' \
             > ./tarball_url
           export release_url=`cat ./tarball_url`
+          echo "::set-output name=tarball_url::$release_url"
           echo "=>Completed: Fetching target release URL $release_url."
-      - name: Download and untar release code
+      - id: download_code
+        name: Download and untar release code
         run: |
-          wget "$release_url" -O "${{ github.event.inputs.repoName }}.tar.gz"
+          wget "${{ steps.vars.outputs.tarball_url }}" -O "${{ github.event.inputs.repoName }}.tar.gz"
           sudo mkdir "./${{ github.event.inputs.repoName }}"
           sudo tar -xzvf "${{ github.event.inputs.repoName }}.tar.gz" -C "${{ github.event.inputs.repoName }}" --strip-components 1
           echo "=>List all doc files"
           ls -l "./${{ github.event.inputs.repoName }}"
           echo "=>Completed: download and untar."
-      - name: Git clone and update doc repo
+      - id: update_repo
+        name: Git clone and update doc repo
         run: |
           sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/czhen-zilliz/action-test.git
           git config --global user.email "zhen.chen@zilliz.com"
