@@ -61,6 +61,7 @@ jobs:
         run: |
           cd ${{ github.event.inputs.repoName }}
           sudo apt install python3.8
+          sudo chmod -R 777 ${{ github.event.inputs.repoName }}
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
