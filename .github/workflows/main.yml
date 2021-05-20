@@ -33,16 +33,38 @@ jobs:
           sudo tar -xzvf "${{ github.event.inputs.repoName }}.tar.gz" -C "${{ github.event.inputs.repoName }}" --strip-components 1
           echo "=>List all files"
           ls -l "./${{ github.event.inputs.repoName }}"
-          echo "=>Completed: download and untar."
-      - id: update_repo_pymilvus
-        name: Git clone and update doc repo
-        if: ${{ github.event.inputs.repoName == 'pymilvus' }}
+          echo "=>Completed: Download and untar."
+      - id: update_repo_directory
+        name: Git clone and update API reference doc directory
         run: |
-          sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/czhen-zilliz/action-test.git
+          sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
           git config --global user.email "zhen.chen@zilliz.com"
           git config --global user.name "czhen-zilliz" 
-          sudo chmod -R 777 action-test
-          cd action-test/pymilvus
+          sudo chmod -R 777 ${{ github.event.repository.name }}
+          cd ${{ github.event.repository.name }}
+          if [ ! -d "./APIReference" ]
+          then
+          echo "=>No APIReference directory, create it."
+            mkdir APIReference
+          fi
+          cd APIReference
+          if [ ! -d "./${{ github.event.inputs.repoName }}" ]
+          then
+            echo "=>No ${{ github.event.inputs.repoName }} doc directory, create it."
+            mkdir ${{ github.event.inputs.repoName }}
+          fi
+          cd ../../
+          echo "=>Completed: Git clone and update API reference doc directory."
+      - id: update_repo_pymilvus
+        name: Update pymilvus doc repo
+        if: ${{ github.event.inputs.repoName == 'pymilvus' }}
+        run: |
+          # sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/czhen-zilliz/action-test.git
+          # git config --global user.email "zhen.chen@zilliz.com"
+          # git config --global user.name "czhen-zilliz" 
+          # sudo chmod -R 777 action-test
+          cd ${{ github.event.repository.name }}/APIReference/pymilvus
+          echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
           echo "=>List all doc versions"
           ls -l
           if [ -d "./${{ github.event.inputs.tagName }}" ]
@@ -53,8 +75,8 @@ jobs:
             echo "===miss tag name, create this dir==="
             sudo mkdir "./${{ github.event.inputs.tagName }}"
           fi
-          echo "=>Completed: download and untar."
           sudo cp ../../pymilvus/docs/source/* "./${{ github.event.inputs.tagName }}"
           git add .
           git commit -m "Update pymilvus"
           git push -f origin master
+          echo "=>Completed: Update pymilvus doc repo."
