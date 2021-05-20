@@ -24,11 +24,11 @@ jobs:
             > ./tarball_url
           export release_url=`cat ./tarball_url`
           echo "::set-output name=tarball_url::$release_url"
-          echo "=>Completed: Fetching target release URL $release_url."
+          echo "=>Completed: Fetching target release URL $release_url"
       - id: download_code
         name: Download and untar release code
         run: |
-          wget "${{ steps.vars.outputs.tarball_url }}" -O "${{ github.event.inputs.repoName }}.tar.gz"
+          wget "${{ steps.fetch_tarball_url.outputs.tarball_url }}" -O "${{ github.event.inputs.repoName }}.tar.gz"
           sudo mkdir "./${{ github.event.inputs.repoName }}"
           sudo tar -xzvf "${{ github.event.inputs.repoName }}.tar.gz" -C "${{ github.event.inputs.repoName }}" --strip-components 1
           echo "=>List all doc files"
