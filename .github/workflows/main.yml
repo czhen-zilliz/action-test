@@ -59,7 +59,7 @@ jobs:
         name: Update pymilvus doc repo
         if: ${{ github.event.inputs.repoName == 'pymilvus' }}
         run: |
-          cd {{ github.event.inputs.repoName }}
+          cd ${{ github.event.inputs.repoName }}
           sudo apt install python3.8
           python -m venv venv
           source venv/bin/activate
