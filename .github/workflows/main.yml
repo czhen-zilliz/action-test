@@ -31,11 +31,12 @@ jobs:
           wget "${{ steps.fetch_tarball_url.outputs.tarball_url }}" -O "${{ github.event.inputs.repoName }}.tar.gz"
           sudo mkdir "./${{ github.event.inputs.repoName }}"
           sudo tar -xzvf "${{ github.event.inputs.repoName }}.tar.gz" -C "${{ github.event.inputs.repoName }}" --strip-components 1
-          echo "=>List all doc files"
-          ls -l "./${{ github.event.inputs.repoName }}/docs/"
+          echo "=>List all files"
+          ls -l "./${{ github.event.inputs.repoName }}"
           echo "=>Completed: download and untar."
-      - id: update_repo
+      - id: update_repo_pymilvus
         name: Git clone and update doc repo
+        if: ${{ github.event.inputs.repoName == 'pymilvus' }}
         run: |
           sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/czhen-zilliz/action-test.git
           git config --global user.email "zhen.chen@zilliz.com"
