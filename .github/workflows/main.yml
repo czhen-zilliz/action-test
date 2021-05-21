@@ -61,10 +61,6 @@ jobs:
         if: ${{ github.event.inputs.repoName == 'pymilvus' }}
         run: |
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
-          sudo apt remove python*
-          sudo apt update
-          sudo apt install python3
-          sudo apt install python3-pip
           # wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tgz
           # tar -xvzf Python-3.8.10.tgz
           # cd Python-3.8.10
@@ -75,14 +71,15 @@ jobs:
           # sudo make install
           # $HOME/py-351/bin/python3 -V
           cd ${{ github.event.inputs.repoName }}
-          # sudo apt update
-          # sudo apt install python3
-          # sudo apt install python3-pip
+          sudo apt update
+          sudo apt install python3
+          sudo apt install python3-pip
           python3 --version
           pip3 --version
           # sudo apt install python3-venv
           # python -m venv venv
           # source venv/bin/activate
+          pip3 install pprint -i https://pypi.doubanio.com/simple/ --trusted-host pypi.douban.com
           pip3 install -r requirements.txt
           cd docs
           sudo apt install make
