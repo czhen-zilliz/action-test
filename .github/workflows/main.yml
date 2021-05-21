@@ -70,7 +70,9 @@ jobs:
           # sudo apt install python3-venv
           # python -m venv venv
           # source venv/bin/activate
-          pip3 install pprint
+          pip3 install PrettyPrinter
+          pip3 install pprintpp
+          pip3 install pp-ez
           pip3 install -r requirements.txt
           cd docs
           sudo apt install make
