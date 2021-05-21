@@ -12,7 +12,7 @@ on:
 
 jobs:
   update_branch:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - id: fetch_tarball_url
         name: Fetch target release URL by tag
@@ -61,8 +61,9 @@ jobs:
         run: |
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
           cd ${{ github.event.inputs.repoName }}
-          # sudo apt install python3
-          # sudo apt install python3-pip
+          sudo apt update
+          sudo apt install python3
+          sudo apt install python3-pip
           python3 --version
           pip3 --version
           # sudo apt install python3-venv
