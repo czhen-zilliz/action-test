@@ -62,8 +62,9 @@ jobs:
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
           docker pull ubuntu
           echo "`pwd`/${{ github.event.inputs.repoName }}"
-          sudo docker run -i -v `pwd`/${{ github.event.inputs.repoName }}:/${{ github.event.inputs.repoName }} ubuntu
+          sudo docker run -i -v `pwd`/${{ github.event.inputs.repoName }}:/docker_vol ubuntu
           ls -l /
+          cd /docker_vol
           cat /etc/release
           # cd ${{ github.event.inputs.repoName }}
           # sudo apt update
