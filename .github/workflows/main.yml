@@ -12,7 +12,7 @@ on:
 
 jobs:
   update_branch:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - id: fetch_tarball_url
         name: Fetch target release URL by tag
@@ -61,6 +61,16 @@ jobs:
         if: ${{ github.event.inputs.repoName == 'pymilvus' }}
         run: |
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
+          wget https://www.python.org/ftp/python/3.8.10/Python-3.8.10.tgz
+          tar -xvzf Python-3.8.10.tgz
+          cd Python-3.8.10
+          sudo chmod -R 777 Python-3.8.10
+          make clean
+          ./configure --prefix=$HOME/py-351
+          make
+          make test
+          sudo make install
+          $HOME/py-351/bin/python3 -V
           cd ${{ github.event.inputs.repoName }}
           # sudo apt update
           # sudo apt install python3
@@ -70,9 +80,6 @@ jobs:
           # sudo apt install python3-venv
           # python -m venv venv
           # source venv/bin/activate
-          pip3 install PrettyPrinter
-          pip3 install pprintpp
-          pip3 install pp-ez
           pip3 install -r requirements.txt
           cd docs
           sudo apt install make
