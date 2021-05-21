@@ -61,7 +61,7 @@ jobs:
         run: |
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
           docker pull ubuntu
-          docker run -it -v `pwd`/${{ github.event.inputs.repoName }}:/pymilvus ubuntu bash
+          docker run -i -v `pwd`/${{ github.event.inputs.repoName }}:/pymilvus ubuntu
           cd /pymilvus
           ls
           cat /etc/release
