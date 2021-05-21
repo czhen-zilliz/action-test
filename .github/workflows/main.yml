@@ -41,7 +41,7 @@ jobs:
           git config --global user.email "zhen.chen@zilliz.com"
           git config --global user.name "czhen-zilliz" 
           sudo chmod -R 777 ${{ github.event.repository.name }}
-          git checout macos
+          git checkout macos
           cd ${{ github.event.repository.name }}
           if [ ! -d "./APIReference" ]
           then
