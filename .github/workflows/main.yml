@@ -42,7 +42,7 @@ jobs:
           git config --global user.name "czhen-zilliz" 
           sudo chmod -R 777 ${{ github.event.repository.name }}
           cd ${{ github.event.repository.name }}
-          git checkout macos
+          git checkout -f macos
           if [ ! -d "./APIReference" ]
           then
           echo "=>No APIReference directory, create it."
