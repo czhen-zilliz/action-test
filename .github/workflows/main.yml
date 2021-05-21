@@ -12,7 +12,7 @@ on:
 
 jobs:
   update_branch:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - id: fetch_tarball_url
         name: Fetch target release URL by tag
@@ -20,7 +20,7 @@ jobs:
           curl \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/milvus-io/${{ github.event.inputs.repoName }}/releases/tags/${{ github.event.inputs.tagName }}" \
-            | jq -r '.tarball_url' \
+            | python -c 'import sys, json; print json.load(sys.stdin)["tarball_url"]' \
             > ./tarball_url
           export release_url=`cat ./tarball_url`
           echo "::set-output name=tarball_url::$release_url"
@@ -41,6 +41,7 @@ jobs:
           git config --global user.email "zhen.chen@zilliz.com"
           git config --global user.name "czhen-zilliz" 
           sudo chmod -R 777 ${{ github.event.repository.name }}
+          git checout macos
           cd ${{ github.event.repository.name }}
           if [ ! -d "./APIReference" ]
           then
@@ -61,9 +62,9 @@ jobs:
         run: |
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
           cd ${{ github.event.inputs.repoName }}
-          sudo apt update
-          sudo apt install python3
-          sudo apt install python3-pip
+          # sudo apt update
+          # sudo apt install python3
+          # sudo apt install python3-pip
           python3 --version
           pip3 --version
           # sudo apt install python3-venv
@@ -93,5 +94,5 @@ jobs:
           sudo cp -r ../../../pymilvus/docs/build/html "./${{ github.event.inputs.tagName }}"
           git add .
           git commit -m "Update pymilvus"
-          git push -f origin master
+          git push -f origin macos
           echo "=>Completed: Update pymilvus doc repo."
