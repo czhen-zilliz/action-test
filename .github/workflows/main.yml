@@ -12,7 +12,7 @@ on:
 
 jobs:
   update_branch:
-    runs-on: macos-11.0
+    runs-on: macos-latest
     steps:
       - id: fetch_tarball_url
         name: Fetch target release URL by tag
