@@ -65,7 +65,6 @@ jobs:
           tar -xvzf Python-3.8.10.tgz
           cd Python-3.8.10
           sudo chmod -R 777 ../Python-3.8.10
-          make clean
           ./configure --prefix=$HOME/py-351
           make
           make test
