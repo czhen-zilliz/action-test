@@ -90,7 +90,7 @@ jobs:
           git commit -m "Update pymilvus"
           git push -f origin macos
           echo "=>Completed: Update pymilvus doc repo."
-      - id: update_repo_pymilvus
+      - id: update_repo_pymilvus_orm
         name: Update pymilvus-orm doc repo
         if: ${{ github.event.inputs.repoName == 'pymilvus-orm' }}
         run: |
