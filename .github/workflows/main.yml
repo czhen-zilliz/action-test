@@ -135,7 +135,7 @@ jobs:
           sudo apt install golang-doc
           sudo apt install golang-golang-x-tools
           godoc -url "/pkg/github.com/milvus-io/milvus-sdk-go/milvus" > milvus.html
-          cd ../../${{ github.event.repository.name }}/APIReference/milvus-sdk-go
+          cd ../${{ github.event.repository.name }}/APIReference/milvus-sdk-go
           echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
           echo "=>List all doc versions"
           ls -l
