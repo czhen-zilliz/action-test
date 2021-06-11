@@ -29,7 +29,7 @@ jobs:
       - id: download_code
         name: Download and untar release code
         run: |
-          wget "${{ steps.fetch_tarball_url.outputs.tarball_url }}" -O "${{ github.event.inputs.repoName }}.tar.gz"
+          wget --header="Authorization: token ${{secrets.FULL_REPO_ACCESS}}" "${{ steps.fetch_tarball_url.outputs.tarball_url }}" -O "${{ github.event.inputs.repoName }}.tar.gz"
           sudo mkdir "./${{ github.event.inputs.repoName }}"
           sudo tar -xzvf "${{ github.event.inputs.repoName }}.tar.gz" -C "${{ github.event.inputs.repoName }}" --strip-components 1
           echo "=>List all files"
