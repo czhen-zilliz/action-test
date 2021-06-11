@@ -14,17 +14,12 @@ jobs:
   update_branch:
     runs-on: ubuntu-latest
     steps:
-      - uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: "milvus-io/${{ github.event.inputs.repoName }}"
-          version: "tags/${{ github.event.inputs.tagName }}"
-          file: "milvus-sdk-node-1.0.0.tar.gz"
-          token: ${{ secrets.ACCESS_TOKEN }}
       - id: fetch_tarball_url
         name: Fetch target release URL by tag
         run: |
           curl \
             -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{secrets.FULL_REPO_ACCESS}}" \
             "https://api.github.com/repos/milvus-io/${{ github.event.inputs.repoName }}/releases/tags/${{ github.event.inputs.tagName }}" \
             | jq -r '.tarball_url' \
             > ./tarball_url
