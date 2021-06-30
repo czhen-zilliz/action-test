@@ -113,6 +113,8 @@ jobs:
           pip3 install pprint -i https://pypi.doubanio.com/simple/ --trusted-host pypi.douban.com
           pip3 install -r requirements.txt
           cd docs
+          # tmporarily fix PBR_VERSION issue
+          export PBR_VERSION=1.2.3 
           sudo apt install make
           make html
           cd build/html
@@ -134,8 +136,8 @@ jobs:
             echo "===miss tag name, create this dir==="
             sudo mkdir "./${{ github.event.inputs.tagName }}"
           fi
-          sudo rm -fr ../../../pymilvus-orm/docs/build/html/api.html
-          sudo cp ../../../pymilvus-orm/docs/build/html/output/* "./${{ github.event.inputs.tagName }}"
+          sudo rm -fr ../../../pymilvus-orm/docs/build/html/api/api.html
+          sudo cp -r ../../../pymilvus-orm/docs/build/html/output/* "./${{ github.event.inputs.tagName }}"
           git add .
           git commit -m "Update pymilvus-orm"
           git push -f origin macos
