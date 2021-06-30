@@ -142,7 +142,8 @@ jobs:
           echo "===show tree of tagname==="
           tree "./${{ github.event.inputs.tagName }}"
           git status
-          git add .
+          sudo git add .
+          git status
           git commit -m "Update pymilvus-orm"
           git push -f origin macos
           echo "=>Completed: Update pymilvus doc repo."
