@@ -139,10 +139,10 @@ jobs:
           sudo rm -fr ../../../pymilvus-orm/docs/build/html/api/api.html
           sudo cp -r ../../../pymilvus-orm/docs/build/html/output/* "./${{ github.event.inputs.tagName }}"
           sudo apt install tree
+          sudo chmod -R 777 .
           echo "===show tree of tagname==="
-          tree "./${{ github.event.inputs.tagName }}"
-          git status
-          sudo git add .
+          tree -a "./${{ github.event.inputs.tagName }}"
+          git add .
           git status
           git commit -m "Update pymilvus-orm"
           git push -f origin macos
