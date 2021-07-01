@@ -112,6 +112,7 @@ jobs:
           # tmporarily fix pprint issue
           pip3 install pprint -i https://pypi.doubanio.com/simple/ --trusted-host pypi.douban.com
           pip3 install -r requirements.txt
+          pip3 install --upgrade protobuf
           cd docs
           # tmporarily fix PBR_VERSION issue
           export PBR_VERSION=5.6.0
