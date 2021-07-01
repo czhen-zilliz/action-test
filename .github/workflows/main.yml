@@ -131,7 +131,7 @@ jobs:
           if [ -d "./${{ github.event.inputs.tagName }}" ]
           then
             echo "===tag name exists, remove all under this dir==="
-            sudo rm -fr "./${{ github.event.inputs.tagName }}"
+            sudo rm -fr "./${{ github.event.inputs.tagName }}/*"
           else
             echo "===miss tag name, create this dir==="
             sudo mkdir "./${{ github.event.inputs.tagName }}"
