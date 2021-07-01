@@ -128,10 +128,14 @@ jobs:
           echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
           echo "=>List all doc versions"
           ls -l
+          sudo chmod -R 777 .
           if [ -d "./${{ github.event.inputs.tagName }}" ]
           then
             echo "===tag name exists, remove all under this dir==="
             sudo rm -fr "./${{ github.event.inputs.tagName }}/*"
+            git add .
+            git status
+            git commit -m "clean files under pymilvus-orm ${{ github.event.inputs.tagName }}"
           else
             echo "===miss tag name, create this dir==="
             sudo mkdir "./${{ github.event.inputs.tagName }}"
