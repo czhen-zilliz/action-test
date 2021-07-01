@@ -114,7 +114,7 @@ jobs:
           pip3 install -r requirements.txt
           cd docs
           # tmporarily fix PBR_VERSION issue
-          export PBR_VERSION=1.2.3 
+          export PBR_VERSION=5.6.0
           sudo apt install make
           make html
           cd build/html
