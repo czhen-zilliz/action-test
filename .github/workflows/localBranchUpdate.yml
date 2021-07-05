@@ -1,4 +1,4 @@
-name: dispatch local docs files update event
+name: Dispatch event of docs files update
 
 on:
   push:
@@ -6,16 +6,16 @@ on:
       - 'docs/**'
 
 jobs:
-  my_first_job:
-    name: My first job
+  dispatch_event:
+    name: Dispatch event
     runs-on: ubuntu-latest
     steps:
       - id: extract_branch
         name: Extract branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      - id: fetch_tarball_url
-        name: Fetch target release URL by tag
+      - id: dispatch_branch_name
+        name: Dispatch branch name with docs update
         run: |
           # curl \
           # -X POST \
