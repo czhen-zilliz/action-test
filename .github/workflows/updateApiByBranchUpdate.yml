@@ -20,12 +20,12 @@ jobs:
           # sudo git clone https://.:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git
           # git config --global user.email "Milvus-doc-bot@zilliz.com"
           # git config --global user.name "Milvus-doc-bot"
-          sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/repos/milvus-io/${{ github.event.inputs.repoName }}.git
+          sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/milvus-io/${{ github.event.inputs.repoName }}.git
           git config --global user.email "zhen.chen@zilliz.com"
           git config --global user.name "czhen-zilliz"
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
-          git checkout ${{ github.event.inputs.branchName }}
           cd ./${{ github.event.inputs.repoName }}
+          git checkout -f ${{ github.event.inputs.branchName }}
           git status
           cd ..
       - id: update_repo_directory
@@ -78,28 +78,28 @@ jobs:
           sudo npm i node-html-parser
           node ./pymilvus-fs.js
           cd ../../../../${{ github.event.repository.name }}/APIReference/pymilvus-orm
-          echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
+          echo "Upcomming tag name: ${{ github.event.inputs.branchName }}"
           echo "=>List all doc versions"
           ls -l
           sudo chmod -R 777 .
-          if [ -d "./${{ github.event.inputs.tagName }}" ]
+          if [ -d "./${{ github.event.inputs.branchName }}" ]
           then
             echo "===tag name exists, remove all under this dir==="
-            sudo rm -fr "./${{ github.event.inputs.tagName }}"
+            sudo rm -fr "./${{ github.event.inputs.branchName }}"
             git add .
             git status
-            git commit -m "clean files under pymilvus-orm ${{ github.event.inputs.tagName }}"
-            sudo mkdir "./${{ github.event.inputs.tagName }}"
+            git commit -m "clean files under pymilvus-orm ${{ github.event.inputs.branchName }}"
+            sudo mkdir "./${{ github.event.inputs.branchName }}"
           else
             echo "===miss tag name, create this dir==="
-            sudo mkdir "./${{ github.event.inputs.tagName }}"
+            sudo mkdir "./${{ github.event.inputs.branchName }}"
           fi
           sudo rm -fr ../../../pymilvus-orm/docs/build/html/api/api.html
-          sudo cp -r ../../../pymilvus-orm/docs/build/html/output/* "./${{ github.event.inputs.tagName }}"
+          sudo cp -r ../../../pymilvus-orm/docs/build/html/output/* "./${{ github.event.inputs.branchName }}"
           sudo apt install tree
           sudo chmod -R 777 .
-          echo "===show tree of tagname==="
-          tree -a "./${{ github.event.inputs.tagName }}"
+          echo "===show tree of branchName==="
+          tree -a "./${{ github.event.inputs.branchName }}"
           git add .
           git status
           git commit -m "Update pymilvus-orm"
