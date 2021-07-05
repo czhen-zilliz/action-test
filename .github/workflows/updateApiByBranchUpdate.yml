@@ -1,4 +1,4 @@
-name: Manually triggered workflow
+name: Manually triggered workflow(branch event)
 
 on:
   workflow_dispatch:
