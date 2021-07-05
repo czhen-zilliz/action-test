@@ -20,7 +20,7 @@ jobs:
           # sudo git clone https://.:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git
           # git config --global user.email "Milvus-doc-bot@zilliz.com"
           # git config --global user.name "Milvus-doc-bot"
-          sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/repos/milvus-io/${{ github.event.inputs.repoName }}.git
+          sudo git clone https://.:${{ secrets.ACCESS_TOKEN }}@github.com/milvus-io/${{ github.event.inputs.repoName }}.git
           git config --global user.email "zhen.chen@zilliz.com"
           git config --global user.name "czhen-zilliz"
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
