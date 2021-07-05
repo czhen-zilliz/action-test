@@ -3,7 +3,7 @@ name: Dispatch event of docs files update
 on:
   push:
     branches-ignore:
-      - 'main'
+      - 'master'
     paths:
       - 'docs/**'
 
