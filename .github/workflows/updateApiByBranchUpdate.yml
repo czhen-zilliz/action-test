@@ -25,7 +25,7 @@ jobs:
           git config --global user.name "czhen-zilliz"
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
           cd ./${{ github.event.inputs.repoName }}
-          git checkout ${{ github.event.inputs.branchName }}
+          git checkout -f ${{ github.event.inputs.branchName }}
           git status
           cd ..
       - id: update_repo_directory
