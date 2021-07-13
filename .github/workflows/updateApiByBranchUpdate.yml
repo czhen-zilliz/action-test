@@ -56,6 +56,7 @@ jobs:
           cd ${{ github.event.repository.name }}/APIReference/${{ github.event.inputs.repoName }}
           export latestDir=`ls | grep -i "${{ github.event.inputs.branchName }}" | sort -V | tail -n 1`
           echo "::set-output name=dirName::$latestDir"
+          cd ../../../
           echo "=>Completed: Latest version directory is $latestDir"
       - id: update_repo_pymilvus_orm
         name: Update pymilvus-orm doc repo
