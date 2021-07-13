@@ -50,9 +50,16 @@ jobs:
           fi
           cd ../../
           echo "=>Completed: Git clone and update API reference doc directory."
+      - id: get_latest_version
+        name: Get directory name with latest version
+        run: |
+          cd ${{ github.event.repository.name }}/APIReference/${{ github.event.inputs.repoName }}
+          export latestDir=`ls | grep -i "${{ github.event.inputs.branchName }}" | sort -V | tail -n 1`
+          echo "::set-output name=dirName::$latestDir"
+          echo "=>Completed: Latest version directory is $latestDir"
       - id: update_repo_pymilvus_orm
         name: Update pymilvus-orm doc repo
-        if: ${{ github.event.inputs.repoName == 'pymilvus-orm' }}
+        if: ${{ (steps.get_latest_version.outputs.dirName) && (github.event.inputs.repoName == 'pymilvus-orm') }}
         run: |
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
           cd ${{ github.event.inputs.repoName }}
@@ -82,26 +89,25 @@ jobs:
           echo "=>List all doc versions"
           ls -l
           sudo chmod -R 777 .
-          if [ -d "./${{ github.event.inputs.branchName }}" ]
+          if [ -d "./v${{ steps.get_latest_version.outputs.dirName }}" ]
           then
             echo "===tag name exists, remove all under this dir==="
-            sudo rm -fr "./${{ github.event.inputs.branchName }}"
+            sudo rm -fr "./v${{ steps.get_latest_version.outputs.dirName }}"
             git add .
             git status
-            git commit -m "clean files under pymilvus-orm ${{ github.event.inputs.branchName }}"
-            sudo mkdir "./${{ github.event.inputs.branchName }}"
+            git commit -m "clean files under pymilvus-orm v${{ github.event.inputs.branchName }}"
+            sudo mkdir "./v${{ steps.get_latest_version.outputs.dirName }}"
+            sudo rm -fr ../../../pymilvus-orm/docs/build/html/api/api.html
+            sudo cp -r ../../../pymilvus-orm/docs/build/html/output/* "./v${{ steps.get_latest_version.outputs.dirName }}"
+            sudo apt install tree
+            sudo chmod -R 777 .
+            echo "===show tree of branchName==="
+            tree -a "./v${{ steps.get_latest_version.outputs.dirName }}"
+            git add .
+            git status
+            git commit -m "Update pymilvus-orm"
+            git push -f origin macos
+            echo "=>Completed: Update pymilvus doc repo."
           else
-            echo "===miss tag name, create this dir==="
-            sudo mkdir "./${{ github.event.inputs.branchName }}"
+            echo "===miss tag name, ignore==="
           fi
-          sudo rm -fr ../../../pymilvus-orm/docs/build/html/api/api.html
-          sudo cp -r ../../../pymilvus-orm/docs/build/html/output/* "./${{ github.event.inputs.branchName }}"
-          sudo apt install tree
-          sudo chmod -R 777 .
-          echo "===show tree of branchName==="
-          tree -a "./${{ github.event.inputs.branchName }}"
-          git add .
-          git status
-          git commit -m "Update pymilvus-orm"
-          git push -f origin macos
-          echo "=>Completed: Update pymilvus doc repo."
