@@ -197,7 +197,7 @@ jobs:
           echo "=>replace doc.js"
           sudo rm -fr ./doc.js
           sudo mv ../${{ github.event.repository.name }}/node_fs.js ./doc.js
-          sudo yarn doc
+          yarn doc
           cd ../${{ github.event.repository.name }}/APIReference/milvus-sdk-node
           echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
           export originTag="${{ github.event.inputs.tagName }}"
