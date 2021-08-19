@@ -194,10 +194,7 @@ jobs:
           echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
           sudo apt update && sudo apt install yarn
           yarn
-          echo "=>replace doc.js"
-          sudo rm -fr ./doc.js
-          sudo mv ../${{ github.event.repository.name }}/node_fs.js ./doc.js
-          yarn doc
+          sudo yarn doc
           cd ../${{ github.event.repository.name }}/APIReference/milvus-sdk-node
           echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
           export originTag="${{ github.event.inputs.tagName }}"
