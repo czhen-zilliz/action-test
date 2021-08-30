@@ -1,0 +1,43 @@
+# name: Manually Generate Release With Assets
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       branchName:
+#         description: 'Branch name'
+#         required: true
+#       tagName:
+#         description: 'Tag name'
+#         required: true
+
+# name: release-please
+# jobs:
+#   release-please:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.8'
+#           architecture: 'x64'
+#       id: create-release
+#         name: create release
+#         run: |
+#           curl \
+#           -X POST \
+#           -H "Accept: application/vnd.github.v3+json" \
+#           https://api.github.com/repos/octocat/hello-world/releases \
+#           -d '{"tag_name":"${{ github.event.inputs.tagName }}"}' \
+#           -u ".:${{secrets.GITHUB_TOKEN}}"
+
+name: release-please
+on:
+  push:
+    branches:
+      - release-test
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: GoogleCloudPlatform/release-please-action@v2
+        with:
+          release-type: python
