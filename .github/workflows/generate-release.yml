@@ -82,16 +82,16 @@ jobs:
         uses: actions/checkout@v2
       - name: Create files
         run: |
+          sudo mkdir dist/
+          cd dist/
           sudo echo "testFile1" > testFile1
           sudo echo "testFile2" > testFile2
+          cd ..
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: |
-            testFile1
-            testFile2
-            README.md
+          files: dist/
       # - name: Pre Release
       #   uses: softprops/action-gh-release@v1
       #   if: contains(github.ref, 'pre')
