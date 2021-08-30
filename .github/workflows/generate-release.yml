@@ -6,9 +6,16 @@
 #       branchName:
 #         description: 'Branch name'
 #         required: true
+#       releaseName:
+#         description: 'Release name'
+#         required: true
 #       tagName:
 #         description: 'Tag name'
 #         required: true
+#       prerelease:
+#         description: 'Is prerelease?'
+#         required: true
+#         default: false
 
 # name: release-please
 # jobs:
@@ -25,19 +32,48 @@
 #           curl \
 #           -X POST \
 #           -H "Accept: application/vnd.github.v3+json" \
-#           https://api.github.com/repos/octocat/hello-world/releases \
-#           -d '{"tag_name":"${{ github.event.inputs.tagName }}"}' \
-#           -u ".:${{secrets.GITHUB_TOKEN}}"
+#           https://api.github.com/repos/czhen-zilliz/action-test/releases \
+#           -d '{"tag_name":"${{ github.event.inputs.tagName }}", \
+#           "name": "${{ github.event.inputs.releaseName }}", \
+#           "prerelease": ${{ github.event.inputs.releaseName }}
+#           }' \
+#           -u ".:${{secrets.GITHUB_TOKEN}}" \
+#           | jq -r '.upload_url' \
+#           > ./upload_url
+#           export upload_url=`cat ./upload_url`
+#           echo "::set-output name=upload_url::$upload_url"
+#       id: upload-assets
+#         name: upload assets
+#         run: |
+#           curl \
+#           -X POST \
+#           -H "Accept: application/vnd.github.v3+json" \
+#           ${{ steps.create-release.outputs.upload_url }} \
+#           -u ".:${{secrets.GITHUB_TOKEN}}" \
 
-name: release-please
+name: Main
+
 on:
   push:
-    branches:
-      - release-test
+    tags:
+      - "v*.*.*"
+
 jobs:
-  release-please:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: GoogleCloudPlatform/release-please-action@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Create files
+        run: |
+          sudo echo "testFile1" > testFile1
+          sudo echo "testFile2" > testFile2
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          release-type: python
+          files: |
+            testFile1
+            testFile2
+            README.md
+
