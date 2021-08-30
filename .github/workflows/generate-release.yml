@@ -58,20 +58,22 @@ name: Main
 #     tags:
 #       - "v*.*.*"
 
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       releaseName:
+#         description: 'Release name'
+#         required: true
+#       tagName:
+#         description: 'Tag name'
+#         required: true
+#       prerelease:
+#         description: 'Is prerelease?'
+#         required: false
+#         default: false
 on:
-  workflow_dispatch:
-    inputs:
-      releaseName:
-        description: 'Release name'
-        required: true
-      tagName:
-        description: 'Tag name'
-        required: true
-      prerelease:
-        description: 'Is prerelease?'
-        required: false
-        default: false
-
+  release:
+    types: [published]
 jobs:
   build:
     runs-on: ubuntu-latest
