@@ -85,10 +85,8 @@ jobs:
           sudo mkdir dist/
           sudo chmod -R 777 dist
           cd dist/
-          sudo touch testFile1
-          sudo touch testFile2
-          sudo echo "testFile1" > testFile1
-          sudo echo "testFile2" > testFile2
+          sudo cp ../README.md ./README1.md
+          sudo cp ../README.md ./README2.md
           cd ..
       - name: Release
         uses: softprops/action-gh-release@v1
