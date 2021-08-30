@@ -80,27 +80,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # - name: Create files
-      #   run: |
-      #     sudo echo "testFile1" > testFile1
-      #     sudo echo "testFile2" > testFile2
-      # - name: Release
-      #   uses: softprops/action-gh-release@v1
-      #   if: startsWith(github.ref, 'refs/tags/')
-      #   with:
-      #     files: |
-      #       testFile1
-      #       testFile2
-      #       README.md
-      - name: Pre Release
+      - name: Create files
+        run: |
+          sudo echo "testFile1" > testFile1
+          sudo echo "testFile2" > testFile2
+      - name: Release
         uses: softprops/action-gh-release@v1
-        if: contains(github.ref, 'pre')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          prerelease: ${{ github.event.inputs.prerelease }}
-          tag_name: ${{ github.event.inputs.tagName }}
-          name: ${{ github.event.inputs.releaseName }}
           files: |
             testFile1
             testFile2
             README.md
+      # - name: Pre Release
+      #   uses: softprops/action-gh-release@v1
+      #   if: contains(github.ref, 'pre')
+      #   with:
+      #     prerelease: ${{ github.event.inputs.prerelease }}
+      #     tag_name: ${{ github.event.inputs.tagName }}
+      #     name: ${{ github.event.inputs.releaseName }}
+      #     files: |
+      #       testFile1
+      #       testFile2
+      #       README.md
 
