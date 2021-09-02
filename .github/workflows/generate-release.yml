@@ -1,107 +1,54 @@
-# name: Manually Generate Release With Assets
+# This is a basic workflow to help you get started with Actions
 
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       branchName:
-#         description: 'Branch name'
-#         required: true
-#       releaseName:
-#         description: 'Release name'
-#         required: true
-#       tagName:
-#         description: 'Tag name'
-#         required: true
-#       prerelease:
-#         description: 'Is prerelease?'
-#         required: true
-#         default: false
+name: Update the release's assets after it published
 
-# name: release-please
-# jobs:
-#   release-please:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: '3.8'
-#           architecture: 'x64'
-#       id: create-release
-#         name: create release
-#         run: |
-#           curl \
-#           -X POST \
-#           -H "Accept: application/vnd.github.v3+json" \
-#           https://api.github.com/repos/czhen-zilliz/action-test/releases \
-#           -d '{"tag_name":"${{ github.event.inputs.tagName }}", \
-#           "name": "${{ github.event.inputs.releaseName }}", \
-#           "prerelease": ${{ github.event.inputs.releaseName }}
-#           }' \
-#           -u ".:${{secrets.GITHUB_TOKEN}}" \
-#           | jq -r '.upload_url' \
-#           > ./upload_url
-#           export upload_url=`cat ./upload_url`
-#           echo "::set-output name=upload_url::$upload_url"
-#       id: upload-assets
-#         name: upload assets
-#         run: |
-#           curl \
-#           -X POST \
-#           -H "Accept: application/vnd.github.v3+json" \
-#           ${{ steps.create-release.outputs.upload_url }} \
-#           -u ".:${{secrets.GITHUB_TOKEN}}" \
-
-name: Main
-
-# on:
-#   push:
-#     tags:
-#       - "v*.*.*"
-
-# on:
-#   workflow_dispatch:
-#     inputs:
-#       releaseName:
-#         description: 'Release name'
-#         required: true
-#       tagName:
-#         description: 'Tag name'
-#         required: true
-#       prerelease:
-#         description: 'Is prerelease?'
-#         required: false
-#         default: false
+# Controls when the workflow will run
 on:
   release:
     types: [published]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # This workflow contains a single job called "build"
   build:
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Create files
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+      - name: Install pypa/build
+        run: >-
+          python -m
+          pip install
+          build
+          --user
+      - name: Clean dist/
         run: |
-          sudo mkdir dist/
-          sudo chmod -R 777 dist
-          cd dist/
-          sudo cp ../README.md ./README1.md
-          sudo cp ../README.md ./README2.md
-          cd ..
-      - name: Release
+          sudo rm -fr dist/*
+      - name: Build a binary wheel and a source tarball
+        run: >-
+          python -m
+          build
+          --sdist
+          --wheel
+          --outdir dist/
+          .
+      - name: Update assets
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: ./dist/*
-      # - name: Pre Release
-      #   uses: softprops/action-gh-release@v1
-      #   if: contains(github.ref, 'pre')
-      #   with:
-      #     prerelease: ${{ github.event.inputs.prerelease }}
-      #     tag_name: ${{ github.event.inputs.tagName }}
-      #     name: ${{ github.event.inputs.releaseName }}
-      #     files: |
-      #       testFile1
-      #       testFile2
-      #       README.md
-
+      - name: Publish distribution 📦 to Test PyPI
+        if: contains(github.ref, 'beta') && startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+          packages_dir: dist/
