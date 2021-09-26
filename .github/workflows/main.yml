@@ -17,7 +17,7 @@ jobs:
       - name: Generate docker tag name
         id: generate-tag-name
         run: |
-          export tag='${{ github.sha }}-${{ env.GITHUB_RUN_NUMBER }}'
+          export tag='${{ github.sha }}-$GITHUB_RUN_NUMBER'
           echo $tag
           echo "::set-output name=docker_tag::$tag"
       - name: Use docker tag name
