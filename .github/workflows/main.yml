@@ -17,10 +17,11 @@ jobs:
       - name: Generate docker tag name
         id: generate-tag-name
         run: |
-          export tag='${{ github.sha }}-$GITHUB_RUN_NUMBER'
+          export tag=${{ github.sha }}-$GITHUB_RUN_NUMBER
           echo $tag
+          echo $GITHUB_RUN_NUMBER
           echo "::set-output name=docker_tag::$tag"
       - name: Use docker tag name
         id: use-tag-name
         run: |
-          echo ${{ steps.fetch_tarball_url.outputs.docker_tag }}
+          echo ${{ steps.generate-tag-name.outputs.docker_tag }}
