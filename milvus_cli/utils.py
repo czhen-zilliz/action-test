@@ -6,7 +6,6 @@ from functools import reduce
 from Types import DataTypeByNum
 from Types import ParameterException, ConnectException
 from time import time
-from setup import VERSION
 
 
 def getPackageVersion():
@@ -15,7 +14,7 @@ def getPackageVersion():
     try:
         version = pkg_resources.require("milvus_cli")[0].version
     except Exception as e:
-        version = VERSION
+        version = "Could not get version under single executable file mode."
     return version
 
 
