@@ -6,12 +6,17 @@ from functools import reduce
 from Types import DataTypeByNum
 from Types import ParameterException, ConnectException
 from time import time
+from setup import VERSION
 
 
 def getPackageVersion():
     import pkg_resources  # part of setuptools
 
-    return pkg_resources.require("milvus_cli")[0].version
+    try:
+        version = pkg_resources.require("milvus_cli")[0].version
+    except Exception as e:
+        version = VERSION
+    return version
 
 
 def checkEmpty(x):
@@ -624,16 +629,15 @@ class Completer(object):
 
 
 WELCOME_MSG = """
-                                                                      
-                                                                      
-███╗   ███╗██╗██╗    ██╗   ██╗██╗   ██╗███████╗     ██████╗██╗     ██╗
-████╗ ████║██║██║    ██║   ██║██║   ██║██╔════╝    ██╔════╝██║     ██║
-██╔████╔██║██║██║    ██║   ██║██║   ██║███████╗    ██║     ██║     ██║
-██║╚██╔╝██║██║██║    ╚██╗ ██╔╝██║   ██║╚════██║    ██║     ██║     ██║
-██║ ╚═╝ ██║██║███████╗╚████╔╝ ╚██████╔╝███████║    ╚██████╗███████╗██║
-╚═╝     ╚═╝╚═╝╚══════╝ ╚═══╝   ╚═════╝ ╚══════╝     ╚═════╝╚══════╝╚═╝
-                                                                      
-
+                                               
+                                               
+  __  __ _ _                    ____ _     ___ 
+ |  \/  (_) |_   ___   _ ___   / ___| |   |_ _|
+ | |\/| | | \ \ / / | | / __| | |   | |    | | 
+ | |  | | | |\ V /| |_| \__ \ | |___| |___ | | 
+ |_|  |_|_|_| \_/  \__,_|___/  \____|_____|___|
+                                               
+                                               
 Learn more: https://github.com/milvus-io/milvus_cli.
 
 """

@@ -3,9 +3,11 @@ from setuptools import setup, find_namespace_packages
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+VERSION = "0.2.0beta2"
+
 setup(
     name="milvus_cli",
-    version="0.2.0beta1",
+    version=VERSION,
     author="Milvus Team",
     author_email="milvus-team@zilliz.com",
     url="https://github.com/milvus-io/milvus_cli",
