@@ -19,7 +19,6 @@ setup(
         "Click==8.0.1",
         "pymilvus==2.0.0rc8",
         "tabulate==0.8.9",
-        "requests==2.26.0",
     ],
     entry_points={
         "console_scripts": [
