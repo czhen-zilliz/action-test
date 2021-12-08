@@ -14,7 +14,9 @@ def getPackageVersion():
     try:
         version = pkg_resources.require("milvus_cli")[0].version
     except Exception as e:
-        version = "Could not get version under single executable file mode."
+        raise ParameterException(
+            "Could not get version under single executable file mode."
+        )
     return version
 
 
