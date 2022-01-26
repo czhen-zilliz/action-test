@@ -40,13 +40,13 @@ jobs:
           echo "${{ steps.added_files.outputs.added_modified }}"
 
       - name: Trigger medium api
-        env:
-          MEDIUM_ID: ${{secrets.MEDIUM_ID}}
-          MEDIUM_TOKEN: ${{secrets.MEDIUM_TOKEN}}
-          FILES: ${{ steps.added_files.outputs.added }}
-          # run: |
-          #   mv postMedium.md postMedium.js
-          #   yarn
-          #   node postMedium.js $FILES
+        # env:
+        #   MEDIUM_ID: ${{secrets.MEDIUM_ID}}
+        #   MEDIUM_TOKEN: ${{secrets.MEDIUM_TOKEN}}
+        #   FILES: ${{ steps.added_files.outputs.added }}
+        # run: |
+        #   mv postMedium.md postMedium.js
+        #   yarn
+        #   node postMedium.js $FILES
         run: |
           echo "${{ steps.added_files.outputs.added }}"
