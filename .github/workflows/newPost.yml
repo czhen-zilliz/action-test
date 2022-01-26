@@ -1,0 +1,45 @@
+name: new post event
+
+on:
+  push:
+    paths:
+      - "blog/**"
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: jitterbit/get-changed-files@v1
+        id: added_files
+        with:
+          format: space-delimited
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Printing
+        run: |
+          echo "All:"
+          echo "${{ steps.added_files.outputs.all }}"
+          echo "Added:"
+          echo "${{ steps.added_files.outputs.added }}"
+          echo "Removed:"
+          echo "${{ steps.added_files.outputs.removed }}"
+          echo "Renamed:"
+          echo "${{ steps.added_files.outputs.renamed }}"
+          echo "Modified:"
+          echo "${{ steps.added_files.outputs.modified }}"
+          echo "Added+Modified:"
+          echo "${{ steps.added_files.outputs.added_modified }}"
+
+      - name: Trigger medium api
+        env:
+          MEDIUM_ID: ${{secrets.MEDIUM_ID}}
+          MEDIUM_TOKEN: ${{secrets.MEDIUM_TOKEN}}
+        run: |
+          mv postMedium.md postMedium.js
+          yarn
+          node trigger-milvus-build.js ${{ steps.added_files.outputs.added }}
