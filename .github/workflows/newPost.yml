@@ -24,26 +24,28 @@ jobs:
           format: space-delimited
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Printing
-      #   run: |
-      #     echo "All:"
-      #     echo "${{ steps.added_files.outputs.all }}"
-      #     echo "Added:"
-      #     echo "${{ steps.added_files.outputs.added }}"
-      #     echo "Removed:"
-      #     echo "${{ steps.added_files.outputs.removed }}"
-      #     echo "Renamed:"
-      #     echo "${{ steps.added_files.outputs.renamed }}"
-      #     echo "Modified:"
-      #     echo "${{ steps.added_files.outputs.modified }}"
-      #     echo "Added+Modified:"
-      #     echo "${{ steps.added_files.outputs.added_modified }}"
+      - name: Printing
+        run: |
+          echo "All:"
+          echo "${{ steps.added_files.outputs.all }}"
+          echo "Added:"
+          echo "${{ steps.added_files.outputs.added }}"
+          echo "Removed:"
+          echo "${{ steps.added_files.outputs.removed }}"
+          echo "Renamed:"
+          echo "${{ steps.added_files.outputs.renamed }}"
+          echo "Modified:"
+          echo "${{ steps.added_files.outputs.modified }}"
+          echo "Added+Modified:"
+          echo "${{ steps.added_files.outputs.added_modified }}"
 
       - name: Trigger medium api
         env:
           MEDIUM_ID: ${{secrets.MEDIUM_ID}}
           MEDIUM_TOKEN: ${{secrets.MEDIUM_TOKEN}}
         run: |
+          export files=${{ steps.added_files.outputs.added }}
+          echo files
           mv postMedium.md postMedium.js
           yarn
-          node postMedium.js "${{ steps.added_files.outputs.added }}"
+          node postMedium.js $files
