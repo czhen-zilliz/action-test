@@ -46,4 +46,4 @@ jobs:
         run: |
           mv postMedium.md postMedium.js
           yarn
-          node postMedium.js ${{ steps.added_files.outputs.added }}
+          node postMedium.js "${{ steps.added_files.outputs.added }}"
