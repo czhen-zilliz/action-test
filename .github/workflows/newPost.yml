@@ -40,6 +40,7 @@ jobs:
           echo "${{ steps.added_files.outputs.added_modified }}"
 
       - name: Trigger medium api
+        if: ${{ steps.added_files.outputs.added }}
         env:
           MEDIUM_ID: ${{secrets.MEDIUM_ID}}
           MEDIUM_TOKEN: ${{secrets.MEDIUM_TOKEN}}
