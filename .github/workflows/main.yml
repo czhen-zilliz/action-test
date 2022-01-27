@@ -184,6 +184,7 @@ jobs:
         if: ${{ github.event.inputs.repoName == 'milvus-sdk-java' }}
         run: |
           sudo chmod -R 777 ${{ github.event.inputs.repoName }}
+          ls
           cd ../${{ github.event.repository.name }}/APIReference/milvus-sdk-java
           echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
           echo "=>List all doc versions"
