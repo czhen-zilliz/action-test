@@ -35,6 +35,7 @@ jobs:
           echo "=>List all files"
           ls -l "./${{ github.event.inputs.repoName }}"
           echo "=>Completed: Download and untar."
+          pwd
       - run: sudo chown -R $USER:$USER ./
       - id: update_repo_directory
         name: Git clone and update API reference doc directory
