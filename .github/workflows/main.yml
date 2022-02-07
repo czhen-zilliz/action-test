@@ -35,7 +35,7 @@ jobs:
           echo "=>List all files"
           ls -l "./${{ github.event.inputs.repoName }}"
           echo "=>Completed: Download and untar."
-      - run: sudo chown -R $USER:$USER /home/github/actions-runner/_work/{REPOSITORY_NAME_HERE}
+      - run: sudo chown -R $USER:$USER /home/github/actions-runner/_work/action-test
       - id: update_repo_directory
         name: Git clone and update API reference doc directory
         uses: actions/checkout@v2
