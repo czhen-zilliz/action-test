@@ -62,7 +62,6 @@ jobs:
         name: Update pymilvus doc repo
         if: ${{ github.event.inputs.repoName == 'pymilvus' }}
         run: |
-          sudo chmod -R $USER:$USER ../${{ github.event.inputs.repoName }}
           cd ../${{ github.event.inputs.repoName }}
           # tmporarily fix pprint issue
           # pip3 install pprint -i https://pypi.doubanio.com/simple/ --trusted-host pypi.douban.com
