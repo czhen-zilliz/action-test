@@ -46,6 +46,7 @@ jobs:
         with:
           node-version: "14"
       - run: |
+          ls
           npm install
           echo  $GITHUB_WORKSPACE
           if [ ! -d "./API_Reference" ]
