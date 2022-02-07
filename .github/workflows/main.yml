@@ -62,6 +62,7 @@ jobs:
         name: Update pymilvus doc repo
         if: ${{ github.event.inputs.repoName == 'pymilvus' }}
         run: |
+          cd $GITHUB_WORKSPACE
           cd ../${{ github.event.inputs.repoName }}
           # tmporarily fix pprint issue
           # pip3 install pprint -i https://pypi.doubanio.com/simple/ --trusted-host pypi.douban.com
