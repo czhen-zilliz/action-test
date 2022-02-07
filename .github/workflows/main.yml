@@ -38,7 +38,8 @@ jobs:
       - id: update_repo_directory
         name: Git clone and update API reference doc directory
         uses: actions/checkout@v2
-        ref: "macos"
+        with:
+          ref: "macos"
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
@@ -46,7 +47,7 @@ jobs:
       - run: echo  $GITHUB_WORKSPACE
       - id: update_repo_pymilvus
         name: Update pymilvus doc repo
-        if: ${{ github.event.inputs.repoName == 'pymilvus' }}
+        if: ${{ github.event.inputs.repoName == 'pymilvus1' }}
         run: |
           sudo chmod -R 777 ../${{ github.event.inputs.repoName }}
           cd ${{ github.event.inputs.repoName }}
