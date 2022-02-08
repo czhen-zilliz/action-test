@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       branchName:
-        description: 'Branch name'
+        description: "Branch name"
         required: true
       repoName:
-        description: 'Repo name'
+        description: "Repo name"
         required: true
 
 jobs:
@@ -60,7 +60,7 @@ jobs:
         if: ${{ github.event.inputs.repoName == 'pymilvus' }}
         uses: actions/checkout@v2
         with:
-          repository: 'https://github.com/milvus-io/${{ github.event.inputs.repoName }}.git'
+          repository: "milvus-io/${{ github.event.inputs.repoName }}"
           path: ${{ github.event.inputs.repoName }}
           token: ${{ secrets.FULL_REPO_ACCESS }}
           ref: ${{ github.event.inputs.branchName }}
