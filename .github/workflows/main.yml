@@ -42,11 +42,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: "macos"
+          path: "repo"
       - uses: actions/setup-node@v2
         with:
           node-version: "14"
       - run: |
+          pwd
           ls
+          cd repo
           npm install
           echo  $GITHUB_WORKSPACE
           if [ ! -d "./API_Reference" ]
@@ -64,8 +67,7 @@ jobs:
         name: Update pymilvus doc repo
         if: ${{ github.event.inputs.repoName == 'pymilvus' }}
         run: |
-          cd $GITHUB_WORKSPACE
-          cd ../${{ github.event.inputs.repoName }}
+          cd $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}
           # tmporarily fix pprint issue
           # pip3 install pprint -i https://pypi.doubanio.com/simple/ --trusted-host pypi.douban.com
           pip install -r requirements.txt
@@ -76,9 +78,9 @@ jobs:
           sudo apt install make
           make html
           cd build/html
-          sudo mv $GITHUB_WORKSPACE/pymilvus-fs.md ./pymilvus-fs.js
+          sudo mv $GITHUB_WORKSPACE/repo/pymilvus-fs.md ./pymilvus-fs.js
           sudo node ./pymilvus-fs.js
-          cd $GITHUB_WORKSPACE/API_Reference/${{ github.event.inputs.repoName }}
+          cd $GITHUB_WORKSPACE/repo/API_Reference/${{ github.event.inputs.repoName }}
           echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
           echo "=>List all doc versions"
           ls -l
