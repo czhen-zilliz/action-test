@@ -114,6 +114,7 @@ jobs:
           echo "======"
           ls $GITHUB_WORKSPACE/repo/API_Reference/pymilvus/v2.0.0
           echo "======"
+          git status
           git add $GITHUB_WORKSPACE/repo/API_Reference/
           git commit -m "Update pymilvus"
           echo "======"
