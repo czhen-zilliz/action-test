@@ -24,7 +24,6 @@ const getAllFilesAbsolutePath = (dirPath, pathList = []) => {
   }
   return pathList;
 };
-path.relative();
 
 const getFileRelativePath = (from, to) => {
   return path.relative(from, to);
@@ -68,7 +67,6 @@ const handleApiFiles = (doc2html, { from, version, category }) => {
       };
     }
     console.log("newPath", newPath);
-    console.log("docHTML", docHTML);
     fs.writeFileSync(newPath, docHTML);
   }
   if (Object.keys(extraData).length) {
