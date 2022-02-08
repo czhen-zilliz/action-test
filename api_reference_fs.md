@@ -47,7 +47,7 @@ const ensureDirectoryExistence = (filePath) => {
 const handleApiFiles = (doc2html, { from, version, category }) => {
   const filesList = getAllFilesAbsolutePath(from);
   const htmlFiles = filesList.filter((i) => i.endsWith(".html"));
-  // console.log(htmlFiles);
+  console.log("htmlFiles", htmlFiles);
   const extraData = {};
   for (let i = 0; i < htmlFiles.length; i++) {
     let filePath = htmlFiles[i];
@@ -72,6 +72,8 @@ const handleApiFiles = (doc2html, { from, version, category }) => {
         parentMenu,
       };
     }
+    console.log("newPath", newPath);
+    console.log("docHTML", docHTML);
     fs.writeFileSync(newPath, docHTML);
   }
   if (Object.keys(extraData).length) {
