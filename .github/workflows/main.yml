@@ -106,9 +106,11 @@ jobs:
           cd $GITHUB_WORKSPACE/repo
           mv ./api_reference_fs.md ./api_reference_fs.js
           sudo node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/output
-          ls $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/
+          ls $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/output
           echo "======"
           ls $GITHUB_WORKSPACE/repo/API_Reference
+          echo "======"
+          cat $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/output/about.html
           echo "======"
           ls $GITHUB_WORKSPACE/repo/API_Reference/pymilvus/v2.0.0
           echo "======"
