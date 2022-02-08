@@ -85,8 +85,10 @@ jobs:
           cd $GITHUB_WORKSPACE/repo/API_Reference/${{ github.event.inputs.repoName }}
           echo "Upcomming branchName name: ${{ github.event.inputs.branchName }}"
           (echo "${{ github.event.inputs.branchName }}" | grep -Eq "^\d\.\d$") && export isFullTag=false || export isFullTag=true
+          echo "=>isFullTag is $isFullTag"
           echo "=>List all doc versions"
           ls -l
+          echo "=>List all doc versions - end"
 
           if [ "$isFullTag" = "true" ]
           then
