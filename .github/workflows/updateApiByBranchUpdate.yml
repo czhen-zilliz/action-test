@@ -40,9 +40,7 @@ jobs:
         with:
           node-version: "14"
       - id: update_repo_directory
-        name: Git clone and update API reference doc directory
-        run: |
-          - name: init API_Reference and repo dir
+        name: init API_Reference and repo dir
         run: |
           cd repo
           npm install
