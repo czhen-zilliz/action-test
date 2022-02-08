@@ -43,6 +43,7 @@ jobs:
         with:
           ref: "macos"
           path: "repo"
+          token: ${{ secrets.ACCESS_TOKEN }}
       - name: setup git config
         run: |
           git config --global user.email "zhen.chen@zilliz.com"
@@ -93,7 +94,7 @@ jobs:
           then
             echo "===tag name exists, remove all under this dir==="
             rm -fr "./${{ github.event.inputs.tagName }}"
-            git add .
+            git add $GITHUB_WORKSPACE/repo/API_Reference/
             git status
             git commit -m "clean files under ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }}"
             mkdir "./${{ github.event.inputs.tagName }}"
@@ -105,7 +106,14 @@ jobs:
           cd $GITHUB_WORKSPACE/repo
           mv ./api_reference_fs.md ./api_reference_fs.js
           sudo node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/output
-          git add .
+          ls $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/
+          echo "======"
+          ls $GITHUB_WORKSPACE/repo/API_Reference
+          echo "======"
+          ls $GITHUB_WORKSPACE/repo/API_Reference/pymilvus/v2.0.0
+          echo "======"
+          git add $GITHUB_WORKSPACE/repo/API_Reference/
           git commit -m "Update pymilvus"
+          echo "======"
           git push -f origin macos
           echo "=>Completed: Update pymilvus doc repo."
