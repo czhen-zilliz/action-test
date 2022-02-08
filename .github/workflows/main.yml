@@ -79,7 +79,7 @@ jobs:
           make html
           cd build/html
           sudo mv $GITHUB_WORKSPACE/repo/pymilvus-fs.md ./pymilvus-fs.js
-          npm i -g node-html-parser
+          sudo npm i node-html-parser
           sudo node ./pymilvus-fs.js
           cd $GITHUB_WORKSPACE/repo/API_Reference/${{ github.event.inputs.repoName }}
           echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
