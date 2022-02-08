@@ -79,6 +79,7 @@ jobs:
           make html
           cd build/html
           sudo mv $GITHUB_WORKSPACE/repo/pymilvus-fs.md ./pymilvus-fs.js
+          npm i -g node-html-parser
           sudo node ./pymilvus-fs.js
           cd $GITHUB_WORKSPACE/repo/API_Reference/${{ github.event.inputs.repoName }}
           echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
@@ -96,8 +97,8 @@ jobs:
             echo "===miss tag name, create this dir==="
             mkdir "./${{ github.event.inputs.tagName }}"
           fi
-          sudo rm -fr ../../../pymilvus/docs/build/html/api/api.html
-          cd ../../
+          sudo rm -fr $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/api/api.html
+          cd $GITHUB_WORKSPACE/repo
           mv ./api_reference_fs.md ./api_reference_fs.js
           node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} ../pymilvus/docs/build/html/output
           git add .
