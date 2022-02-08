@@ -121,3 +121,38 @@ jobs:
           echo "======"
           git push origin macos
           echo "=>Completed: Update pymilvus doc repo."
+      - id: update_repo_milvus_sdk_go
+        name: Update milvus_sdk_go doc
+        if: ${{ github.event.inputs.repoName == 'milvus-sdk-go' }}
+        run: |
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}
+          cd $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}
+          sudo apt update
+          sudo apt install golang-doc
+          sudo apt install golang-golang-x-tools
+          mkdir output
+          godoc -url "/pkg/github.com/milvus-io/milvus-sdk-go/milvus" > output/milvus.html
+          cd $GITHUB_WORKSPACE/repo/API_Reference/${{ github.event.inputs.repoName }}
+          echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
+          echo "=>List all doc versions"
+          ls -l
+          if [ -d "./${{ github.event.inputs.tagName }}" ]
+          then
+            echo "===tag name exists, remove all under this dir==="
+            rm -fr "./${{ github.event.inputs.tagName }}"
+            git add $GITHUB_WORKSPACE/repo/API_Reference/
+            git status
+            git commit -m "clean files under ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }}"
+            mkdir "./${{ github.event.inputs.tagName }}"
+          else
+            echo "===miss tag name, create this dir==="
+            mkdir "./${{ github.event.inputs.tagName }}"
+          fi
+          cd $GITHUB_WORKSPACE/repo
+          mv ./api_reference_fs.md ./api_reference_fs.js
+          node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/output
+          git status
+          git add $GITHUB_WORKSPACE/repo/API_Reference/
+          git commit -m "Update milvus-sdk-go"
+          git push origin master
+          echo "=>Completed: Update milvus-sdk-go doc."
