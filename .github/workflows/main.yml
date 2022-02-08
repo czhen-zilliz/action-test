@@ -72,6 +72,7 @@ jobs:
         name: Update pymilvus doc repo
         if: ${{ github.event.inputs.repoName == 'pymilvus' }}
         run: |
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}
           cd $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}
           # tmporarily fix pprint issue
           # pip3 install pprint -i https://pypi.doubanio.com/simple/ --trusted-host pypi.douban.com
@@ -83,9 +84,9 @@ jobs:
           sudo apt install make
           make html
           cd build/html
-          sudo mv $GITHUB_WORKSPACE/repo/pymilvus-fs.md ./pymilvus-fs.js
-          sudo npm i node-html-parser
-          sudo node ./pymilvus-fs.js
+          cp $GITHUB_WORKSPACE/repo/pymilvus-fs.md ./pymilvus-fs.js
+          npm i node-html-parser
+          node ./pymilvus-fs.js
           cd $GITHUB_WORKSPACE/repo/API_Reference/${{ github.event.inputs.repoName }}
           echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
           echo "=>List all doc versions"
@@ -102,10 +103,10 @@ jobs:
             echo "===miss tag name, create this dir==="
             mkdir "./${{ github.event.inputs.tagName }}"
           fi
-          sudo rm -fr $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/api/api.html
+          rm -fr $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/api/api.html
           cd $GITHUB_WORKSPACE/repo
           mv ./api_reference_fs.md ./api_reference_fs.js
-          sudo node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/output
+          node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/output
           ls $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/output
           echo "======"
           ls $GITHUB_WORKSPACE/repo/API_Reference
@@ -118,5 +119,5 @@ jobs:
           git add $GITHUB_WORKSPACE/repo/API_Reference/
           git commit -m "Update pymilvus"
           echo "======"
-          git push -f origin macos
+          git push origin macos
           echo "=>Completed: Update pymilvus doc repo."
