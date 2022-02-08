@@ -154,5 +154,5 @@ jobs:
           git status
           git add $GITHUB_WORKSPACE/repo/API_Reference/
           git commit -m "Update milvus-sdk-go"
-          git push origin master
+          git push origin macos
           echo "=>Completed: Update milvus-sdk-go doc."
