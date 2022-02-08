@@ -221,7 +221,7 @@ jobs:
           cp -r $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/doc/index.html $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/outputs/
           cd $GITHUB_WORKSPACE/repo
           mv ./api_reference_fs.md ./api_reference_fs.js
-          node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/output
+          node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/outputs
           git status
           git add $GITHUB_WORKSPACE/repo/API_Reference/
           git commit -m "Update java sdk doc"
