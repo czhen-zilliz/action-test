@@ -100,7 +100,7 @@ jobs:
           sudo rm -fr $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/build/html/api/api.html
           cd $GITHUB_WORKSPACE/repo
           mv ./api_reference_fs.md ./api_reference_fs.js
-          node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} ../pymilvus/docs/build/html/output
+          sudo node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} ../pymilvus/docs/build/html/output
           git add .
           git commit -m "Update pymilvus"
           git push -f origin macos
