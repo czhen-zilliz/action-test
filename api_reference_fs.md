@@ -24,15 +24,10 @@ const getAllFilesAbsolutePath = (dirPath, pathList = []) => {
   }
   return pathList;
 };
+path.relative();
 
-/**
- * Get relative path from absolute path.
- * @param {string} path Absolute path.
- * @param {string} dir Directory name used to split the absolute path.
- * @returns {string} Relative path, such as "example/index.html" and "index.html".
- */
-const getFileRelativePath = (path, dir) => {
-  return path.split(`${dir}/`).pop();
+const getFileRelativePath = (from, to) => {
+  return path.relative(from, to);
 };
 
 const ensureDirectoryExistence = (filePath) => {
@@ -58,7 +53,7 @@ const handleApiFiles = (doc2html, { from, version, category }) => {
       order: docOrder,
       parentMenu = {},
     } = doc2html(doc);
-    const relativePath = getFileRelativePath(filePath, version);
+    const relativePath = getFileRelativePath(from, filePath);
     const newPath = `API_Reference/${category}/${version}/${relativePath}`;
     ensureDirectoryExistence(newPath);
     if (
