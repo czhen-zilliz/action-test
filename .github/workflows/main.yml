@@ -156,3 +156,42 @@ jobs:
           git commit -m "Update milvus-sdk-go"
           git push origin macos
           echo "=>Completed: Update milvus-sdk-go doc."
+      - id: update_repo_milvus_sdk_node
+        name: Update node doc repo
+        if: ${{ github.event.inputs.repoName == 'milvus-sdk-node' }}
+        run: |
+          sudo chown -R $USER:$USER $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}
+          cd $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}
+          sudo apt update
+          sudo apt -y install gcc g++ make
+          yarn
+          yarn doc
+          cd $GITHUB_WORKSPACE/repo/API_Reference/${{ github.event.inputs.repoName }}
+          echo "Upcomming tag name: ${{ github.event.inputs.tagName }}"
+          export originTag="${{ github.event.inputs.tagName }}"
+          export tag=${originTag##*-}
+          echo "Tag name without prefix: ${tag}"
+          echo "=>List all doc versions"
+          ls -l
+          if [ -d "./${tag}" ]
+          then
+            echo "===tag name exists, remove all under this dir==="
+            rm -fr "./${tag}"
+            git add $GITHUB_WORKSPACE/repo/API_Reference/
+            git status
+            git commit -m "clean files under ${{ github.event.inputs.repoName }} ${tag}"
+            mkdir "./${tag}"
+          else
+            echo "===miss tag name, create this dir==="
+            mkdir "./${tag}"
+          fi
+          rm -fr $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/index.html
+          rm -fr $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs/assets
+          cd $GITHUB_WORKSPACE/repo
+          mv ./api_reference_fs.md ./api_reference_fs.js
+          node api_reference_fs.js ${{ github.event.inputs.repoName }} ${{ github.event.inputs.tagName }} $GITHUB_WORKSPACE/${{ github.event.inputs.repoName }}/docs
+          git status
+          git add $GITHUB_WORKSPACE/repo/API_Reference/
+          git commit -m "Update milvus-sdk-node"
+          git push origin macos
+          echo "=>Completed: Update milvus-sdk-node doc."
